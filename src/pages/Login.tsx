@@ -4,6 +4,8 @@ import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { SERVER_URL } from "./SignUp";
+import { setUser } from "../redux/slices/user.slice";
+import { useAppDispatch } from "../redux/hooks";
 
 const loginFields = [
   {
@@ -51,6 +53,7 @@ const Login = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const handlePasswordToggle = () => {
     setShowPassword((prev) => !prev);
@@ -111,7 +114,7 @@ const Login = () => {
 
     setIsSubmitting(true);
     try {
-      const response = await axios.post(
+      const { data } = await axios.post(
         `${SERVER_URL}/auth/login`,
         {
           ...userData,
@@ -121,7 +124,7 @@ const Login = () => {
         }
       );
 
-      console.log(response);
+      dispatch(setUser(data.data.user));
     } catch (error: any) {
       console.error("Signup failed:", error);
 
@@ -144,7 +147,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4 bg-background">
-      <div className="bg-white rounded-xl shadow-lg w-full max-w-md px-2 py-4 border-[1px] border-border">
+      <div className="bg-white rounded-xl shadow-lg w-full max-w-[490px] px-4 py-4 border-[1px] border-border">
         <h1 className="text-2xl font-bold mb-2 text-primary text-center">
           Feastify
         </h1>
@@ -221,7 +224,7 @@ const Login = () => {
           </div>
 
           {errors.submit && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+            <div className="my-3 p-3 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-red-500 text-sm flex justify-center items-center gap-2">
                 <svg
                   className="w-4 h-4 flex-shrink-0"
@@ -263,10 +266,10 @@ const Login = () => {
           type="button"
         >
           <FcGoogle size={20} />
-          <span>Sign Up with Google</span>
+          <span>Login with Google</span>
         </button>
 
-        <p className="mt-6 text-center text-lg">
+        <p className="mt-6 text-center text-base">
           Don't have an account?{" "}
           <Link to="/signup" className="text-primary hover:underline">
             Sign Up

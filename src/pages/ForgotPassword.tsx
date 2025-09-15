@@ -140,7 +140,7 @@ const ForgotPassword = () => {
   return (
     <div className="flex items-center justify-center min-h-screen p-4 w-full bg-background">
       <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-8">
-        <div className="flex items-center gap-4 mb-4">
+        <div className="flex items-center gap-16 mb-4">
           <button onClick={() => navigate("/login")} className="cursor-pointer">
             <IoIosArrowRoundBack size={30} className="text-primary" />
           </button>

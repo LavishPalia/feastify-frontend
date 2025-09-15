@@ -3,6 +3,8 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useAppDispatch } from "../redux/hooks";
+import { setUser } from "../redux/slices/user.slice";
 
 const signupFields = [
   {
@@ -87,6 +89,8 @@ const SignUp = () => {
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   const handlePasswordToggle = () => {
     setShowPassword((prev) => !prev);
@@ -174,7 +178,7 @@ const SignUp = () => {
 
     setIsSubmitting(true);
     try {
-      const response = await axios.post(
+      const { data } = await axios.post(
         `${SERVER_URL}/auth/create-new-account`,
         {
           ...userData,
@@ -184,7 +188,7 @@ const SignUp = () => {
         }
       );
 
-      console.log(response);
+      dispatch(setUser(data.data.user));
     } catch (error: any) {
       console.error("Signup failed:", error);
 
@@ -207,17 +211,17 @@ const SignUp = () => {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4 bg-background">
-      <div className="bg-white rounded-xl shadow-lg w-full max-w-md px-2 py-4 border-[1px] border-border">
+      <div className="bg-white rounded-xl shadow-lg w-full max-w-[490px] px-4 py-4 border-[1px] border-border">
         <h1 className="text-2xl font-bold mb-2 text-primary text-center">
           Feastify
         </h1>
-        <p className="text-gray-500 mb-8 text-center">
+        <p className="text-gray-500 mb-3 text-center">
           Create an account to start ordering your favorite meals.
         </p>
 
         <form onSubmit={handleSubmit} noValidate>
           {signupFields.map((field, index) => (
-            <div className="mb-4 relative" key={index}>
+            <div className="mb-3 relative" key={index}>
               <label htmlFor={field.name} className={field.labelClassNames}>
                 {field.label}
                 {field.required && <span className="text-red-500 ml-1">*</span>}
@@ -276,7 +280,7 @@ const SignUp = () => {
             </div>
           ))}
 
-          <div className="mb-4">
+          <div className="mb-3">
             <label
               htmlFor="role"
               className="block text-gray-700 font-medium mb-1"
@@ -312,7 +316,7 @@ const SignUp = () => {
           </div>
 
           {errors.submit && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+            <div className="my-3 p-3 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-red-500 text-sm flex justify-center items-center gap-2">
                 <svg
                   className="w-4 h-4 flex-shrink-0"
@@ -332,7 +336,7 @@ const SignUp = () => {
 
           <button
             type="submit"
-            className="w-full rounded-lg bg-primary text-white font-medium hover:bg-hover transition-all mt-4 px-3 py-2 focus:outline-none 
+            className="w-full rounded-lg bg-primary text-white font-medium hover:bg-hover transition-all mt-3 px-3 py-2 focus:outline-none 
               focus:border-orange-500 border-[1px] cursor-pointer border-border disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isSubmitting}
           >
@@ -340,7 +344,7 @@ const SignUp = () => {
           </button>
         </form>
 
-        <div className="my-4 flex items-center">
+        <div className="my-3 flex items-center">
           <div className="flex-grow border-t border-gray-300"></div>
           <span className="mx-4 text-gray-500">or</span>
           <div className="flex-grow border-t border-gray-300"></div>
@@ -354,10 +358,10 @@ const SignUp = () => {
           type="button"
         >
           <FcGoogle size={20} />
-          <span>Sign Up with Google</span>
+          <span>Signup with Google</span>
         </button>
 
-        <p className="mt-6 text-center text-lg">
+        <p className="mt-4 text-center text-base">
           Already have an account?{" "}
           <Link to="/login" className="text-primary hover:underline">
             Sign In
