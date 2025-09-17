@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { SERVER_URL } from "../pages/SignUp";
 import { clearUser, setUser } from "../redux/slices/user.slice";
 import { useAppDispatch } from "../redux/hooks";
 
@@ -11,9 +10,12 @@ const useGetCurrentUser = () => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
-        const { data } = await axios.get(`${SERVER_URL}/users/current`, {
-          withCredentials: true,
-        });
+        const { data } = await axios.get(
+          `${import.meta.env.VITE_SERVER_URL}/users/current`,
+          {
+            withCredentials: true,
+          }
+        );
 
         dispatch(setUser(data.data));
       } catch (error) {

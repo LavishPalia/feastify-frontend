@@ -13,7 +13,7 @@ function App() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center gap-2 h-screen">
+      <div className="flex items-center justify-center gap-2 h-screen bg-background">
         <LuLoaderCircle size={30} className="animate-spin" />
         <span className="text-3xl">Loading Home Screen...</span>
       </div>

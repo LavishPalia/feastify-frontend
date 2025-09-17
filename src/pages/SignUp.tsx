@@ -59,8 +59,6 @@ const roles = [
   { value: "deliveryBoy", label: "Delivery Partner" },
 ];
 
-export const SERVER_URL = "http://localhost:8000/api/v1";
-
 interface SignupData {
   fullname: string;
   email: string;
@@ -179,7 +177,7 @@ const SignUp = () => {
     setIsSubmitting(true);
     try {
       const { data } = await axios.post(
-        `${SERVER_URL}/auth/create-new-account`,
+        `${import.meta.env.VITE_SERVER_URL}/auth/create-new-account`,
         {
           ...userData,
         },

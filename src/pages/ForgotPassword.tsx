@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import { SERVER_URL } from "./SignUp";
 
 const ForgotPassword = () => {
   const [step, setStep] = useState(1);
@@ -32,7 +31,7 @@ const ForgotPassword = () => {
     setError("");
     try {
       const response = await axios.post(
-        `${SERVER_URL}/auth/send-otp`,
+        `${import.meta.env.VITE_SERVER_URL}/auth/send-otp`,
         {
           email,
         },
@@ -62,7 +61,7 @@ const ForgotPassword = () => {
     setError("");
     try {
       await axios.post(
-        `${SERVER_URL}/auth/send-otp`,
+        `${import.meta.env.VITE_SERVER_URL}/auth/send-otp`,
         { email },
         { withCredentials: true }
       );
@@ -83,7 +82,7 @@ const ForgotPassword = () => {
     setError("");
     try {
       const response = await axios.post(
-        `${SERVER_URL}/auth/verify-otp`,
+        `${import.meta.env.VITE_SERVER_URL}/auth/verify-otp`,
         {
           email,
           otp,
@@ -114,7 +113,7 @@ const ForgotPassword = () => {
     setError("");
     try {
       const response = await axios.post(
-        `${SERVER_URL}/auth/reset-password`,
+        `${import.meta.env.VITE_SERVER_URL}/auth/reset-password`,
         {
           email,
           newPassword,

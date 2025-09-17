@@ -15,8 +15,6 @@ export default function ProtectedRoute({
 }: ProtectedRouteProps) {
   const { user } = useAppSelector((state) => state.user);
 
-  console.log(user);
-
   if (!user) return <Navigate to={redirectTo} replace />;
 
   if (allowedRoles && !allowedRoles.includes(user.role)) {

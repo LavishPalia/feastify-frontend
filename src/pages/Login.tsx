@@ -3,7 +3,6 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { SERVER_URL } from "./SignUp";
 import { setUser } from "../redux/slices/user.slice";
 import { useAppDispatch } from "../redux/hooks";
 
@@ -115,7 +114,7 @@ const Login = () => {
     setIsSubmitting(true);
     try {
       const { data } = await axios.post(
-        `${SERVER_URL}/auth/login`,
+        `${import.meta.env.VITE_SERVER_URL}/auth/login`,
         {
           ...userData,
         },
