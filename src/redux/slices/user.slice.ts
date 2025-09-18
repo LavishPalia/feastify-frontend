@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-type User = {
+export type User = {
   _id: string;
   fullname: string;
   email: string;
@@ -11,6 +11,8 @@ type User = {
 
 type Location = {
   city: string;
+  state: string;
+  address: string;
 };
 
 type UserState = {

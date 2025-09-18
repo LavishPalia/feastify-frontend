@@ -11,6 +11,7 @@ import axios from "axios";
 import { clearUser } from "../redux/slices/user.slice";
 import { FaList, FaPlus, FaSignOutAlt, FaTruck, FaUser } from "react-icons/fa";
 import { TbReceipt } from "react-icons/tb";
+import useGetRestaurantDetails from "../hooks/useGetRestaurantDetails";
 
 const NAV_ITEMS = {
   user: {
@@ -41,9 +42,13 @@ const Navbar = () => {
     top: 0,
     left: 0,
   });
+  useGetRestaurantDetails();
+  const { loading: loadingLocation } = useGetUserLocation();
 
   const { user, location } = useAppSelector((state) => state.user);
-  const { loading: loadingLocation } = useGetUserLocation();
+  const { restaurant } = useAppSelector((state) => state.restaurant);
+
+  console.log(restaurant);
 
   const dispatch = useAppDispatch();
 
@@ -86,10 +91,19 @@ const Navbar = () => {
   }, [showProfilePopup]);
 
   const role = user?.role || "user";
-  const navConfig = NAV_ITEMS[role as keyof typeof NAV_ITEMS];
+  const navConfig =
+    role === "owner"
+      ? {
+          ...NAV_ITEMS.owner,
+          buttons: restaurant
+            ? NAV_ITEMS.owner.buttons
+            : NAV_ITEMS.owner.buttons.slice(1),
+        }
+      : NAV_ITEMS[role as keyof typeof NAV_ITEMS];
 
   return (
     <div className="w-full h-[80px] flex items-center justify-between md:justify-center gap-[30px] px-[20px] fixed top-0 z-[9999] bg-background">
+      {/* mobile search */}
       {showSearch && navConfig.showSearch && (
         <div className="fixed top-20 left-[5%] w-[90%] h-[55px] bg-white shadow-xl rounded-lg flex items-center gap-[20px] md:hidden">
           <div className="flex items-center w-[30%] overflow-hidden gap-[10px] px-[10px] border-r-[2px] border-gray-400">
@@ -113,6 +127,7 @@ const Navbar = () => {
 
       <h1 className="text-3xl font-bold mb-2 text-primary">Feastify</h1>
 
+      {/* desktop search for customers */}
       {navConfig.showSearch && (
         <div className="md:w-[60%] lg:w-[40%] h-[55px] bg-white shadow-xl rounded-lg hidden md:flex items-center gap-[20px]">
           <div className="flex items-center w-[30%] overflow-hidden gap-[10px] px-[10px] border-r-[2px] border-gray-400">
@@ -150,6 +165,7 @@ const Navbar = () => {
             />
           ))}
 
+        {/* cart for customers */}
         {navConfig.showCart && (
           <div className="relative cursor-pointer">
             <FiShoppingCart size={25} className="text-primary" />
@@ -175,13 +191,7 @@ const Navbar = () => {
           </div>
         ))}
 
-        {/* <div
-          className="size-[40px] rounded-full flex items-center justify-center bg-primary text-white text-lg shadow-xl font-semibold cursor-pointer"
-          onClick={() => setShowProfilePopup((prev) => !prev)}
-        >
-          {user?.fullname?.slice(0, 1)}
-        </div> */}
-
+        {/* profile button */}
         <div
           className="size-[40px] rounded-full flex items-center justify-center bg-primary text-white text-lg shadow-xl font-semibold cursor-pointer"
           onClick={handleToggleProfilePopup}
@@ -195,6 +205,7 @@ const Navbar = () => {
             .toUpperCase()}
         </div>
 
+        {/* profile popup */}
         {showProfilePopup && (
           <div
             className="fixed w-[180px] bg-white py-2 shadow-2xl rounded-xl flex flex-col gap-2.5 z-[9999]"

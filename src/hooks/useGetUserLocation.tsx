@@ -24,6 +24,8 @@ const useGetUserLocation = () => {
         dispatch(
           setLocation({
             city: data.results[0].city,
+            state: data.results[0].state,
+            address: `${data.results[0].address_line1}, ${data.results[0].address_line2}`,
           })
         );
       } catch (error) {

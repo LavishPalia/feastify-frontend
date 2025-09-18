@@ -7,6 +7,8 @@ import Home from "./pages/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
 import { LuLoaderCircle } from "react-icons/lu";
+import CreateRestaurant from "./pages/CreateRestaurant";
+import EditRestaurant from "./pages/EditRestaurant";
 
 function App() {
   const { loading } = useGetCurrentUser();
@@ -51,6 +53,22 @@ function App() {
         element={
           <ProtectedRoute>
             <Home />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/create-restaurant"
+        element={
+          <ProtectedRoute>
+            <CreateRestaurant />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/edit-restaurant"
+        element={
+          <ProtectedRoute>
+            <EditRestaurant />
           </ProtectedRoute>
         }
       />
