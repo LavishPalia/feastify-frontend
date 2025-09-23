@@ -12,29 +12,45 @@ import { clearUser } from "../redux/slices/user.slice";
 import { FaList, FaPlus, FaSignOutAlt, FaTruck, FaUser } from "react-icons/fa";
 import { TbReceipt } from "react-icons/tb";
 import useGetRestaurantDetails from "../hooks/useGetRestaurantDetails";
-
-const NAV_ITEMS = {
-  user: {
-    showSearch: true,
-    showCart: true,
-    buttons: [{ label: "My Orders", icon: <FaList size={12} /> }],
-  },
-  owner: {
-    showSearch: false,
-    showCart: false,
-    buttons: [
-      { label: "Add Food Item", icon: <FaPlus size={12} /> },
-      { label: "Pending Orders", icon: <TbReceipt size={12} /> },
-    ],
-  },
-  deliveryBoy: {
-    showSearch: false,
-    showCart: false,
-    buttons: [{ label: "My Deliveries", icon: <FaTruck size={12} /> }],
-  },
-};
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const NAV_ITEMS = {
+    user: {
+      showSearch: true,
+      showCart: true,
+      buttons: [
+        { label: "My Orders", icon: <FaList size={12} />, onClick: undefined },
+      ],
+    },
+    owner: {
+      showSearch: false,
+      showCart: false,
+      buttons: [
+        {
+          label: "Add Food Item",
+          icon: <FaPlus size={12} />,
+          onClick: () => navigate("/add-food-item"),
+        },
+        {
+          label: "Pending Orders",
+          icon: <TbReceipt size={12} />,
+          onclick: undefined,
+        },
+      ],
+    },
+    deliveryBoy: {
+      showSearch: false,
+      showCart: false,
+      buttons: [
+        {
+          label: "My Deliveries",
+          icon: <FaTruck size={12} />,
+          onClick: undefined,
+        },
+      ],
+    },
+  };
   const [showProfilePopup, setShowProfilePopup] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
 
@@ -51,6 +67,8 @@ const Navbar = () => {
   console.log(restaurant);
 
   const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
 
   const profileBtnRef = useRef<HTMLDivElement>(null);
 
@@ -102,7 +120,7 @@ const Navbar = () => {
       : NAV_ITEMS[role as keyof typeof NAV_ITEMS];
 
   return (
-    <div className="w-full h-[80px] flex items-center justify-between md:justify-center gap-[30px] px-[20px] fixed top-0 z-[9999] bg-background">
+    <div className="w-full h-[80px] flex items-center justify-between md:justify-around gap-[30px] px-[20px] fixed top-0 z-[9999] bg-background">
       {/* mobile search */}
       {showSearch && navConfig.showSearch && (
         <div className="fixed top-20 left-[5%] w-[90%] h-[55px] bg-white shadow-xl rounded-lg flex items-center gap-[20px] md:hidden">
@@ -175,9 +193,12 @@ const Navbar = () => {
           </div>
         )}
 
-        {navConfig.buttons.map(({ label, icon }) => (
+        {navConfig.buttons.map(({ label, icon, onClick }) => (
           <div key={label} className="relative">
-            <button className="px-3 py-2 cursor-pointer rounded-lg bg-primary/10 text-primary font-medium flex items-center gap-[10px]">
+            <button
+              className="px-3 py-2 cursor-pointer rounded-lg bg-primary/10 text-primary font-medium flex items-center gap-[10px]"
+              onClick={onClick}
+            >
               {icon}
               <span className="hidden md:inline">{label}</span>
             </button>
@@ -217,10 +238,11 @@ const Navbar = () => {
                 {user?.fullname}
               </span>
             </div>
-            {navConfig.buttons.map(({ label, icon }) => (
+            {navConfig.buttons.map(({ label, icon, onClick }) => (
               <div
                 key={label}
                 className="md:hidden font-semibold cursor-pointer flex gap-2 items-center px-3 py-2 hover:bg-gray-100"
+                onClick={onClick}
               >
                 {icon}
                 <span className="">{label}</span>
